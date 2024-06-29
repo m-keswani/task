@@ -1,7 +1,11 @@
 import json
 import pandas as pd
 import streamlit as st
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+import nltk
+
+# Download the VADER lexicon
+nltk.download('vader_lexicon')
 
 # Initialize Vader sentiment analyzer
 analyzer = SentimentIntensityAnalyzer()
@@ -11,10 +15,7 @@ def load_data(file):
     data = json.load(file)
     conversations = []
     for convo in data:
-        convo_text = ""
-        for turn in convo:
-            if turn['from'] == 'human':
-                convo_text += turn['value'] + " "
+        convo_text = " ".join([turn['value'] for turn in convo if isinstance(turn, dict) and 'value' in turn and 'from' in turn and turn['from'] == 'human'])
         conversations.append(convo_text.strip())
     return conversations
 
