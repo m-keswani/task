@@ -1,3 +1,4 @@
+vaderSentiment
 streamlit
 pandas
 vaderSentiment
